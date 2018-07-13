@@ -1,6 +1,6 @@
 const path = require('path');
+const HtmlWebpaclPlugin = require('html-webpack-plugin');
 module.exports = {
-
     // 入口
     entry: [
         // 用来保持react中的state
@@ -60,4 +60,8 @@ module.exports = {
     },
 
     devtool: 'inline-source-map',//对控制台报错信息的优化
+    plugins: [new HtmlWebpaclPlugin({
+        filename:'index.html',
+        template:path.join(__dirname,'src/index.html')
+    })]
 }
