@@ -39,12 +39,22 @@ module.exports = {
             filename: 'index.html',
             template: path.join(__dirname, 'src/index.html')
         }),
-        new UglifyJSPlugin()
+        new UglifyJSPlugin(),
+        new webpack.DefinePlugin({
+            'process.env':{
+                'NODE_ENV':JSON.stringify('production')
+            }
+        })
         // new webpack.optimize.CommonsChunkPlugin({
         //     name: 'vendor'
         // })
 
     ],
+    optimization: {
+        splitChunks:{
+            name: 'vendor'
+        }
+    },
 
     resolve: {
         alias: {
