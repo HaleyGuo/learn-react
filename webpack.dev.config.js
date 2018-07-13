@@ -1,13 +1,17 @@
 const path = require('path');
 const HtmlWebpaclPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+
 module.exports = {
     // 入口
-    entry: [
-        // 用来保持react中的state
-        'react-hot-loader/patch',
-
-        path.join(__dirname, 'src/index.js')
-    ],
+    entry: {
+        app: [
+            // 用来保持react中的state
+            'react-hot-loader/patch',
+            path.join(__dirname, 'src/index.js')
+        ],
+        vendor:['react','react-router-dom','redux','react-dom','react-redux']
+    },
     // 输出到dist文件夹，输出文件名字为bundle.js
     output: {
         path: path.join(__dirname, './dist'),
@@ -30,11 +34,11 @@ module.exports = {
                 use: ['style-loader', 'css-loader'],
             },
             {
-                test:/\.(png|jpg|gif)$/,
-                use:[{
-                    loader:'url-loader',
-                    options:{
-                        limit:8192//小于等于8K的图片会被转成base64编码，直接插入HTML中，减少HTTP请求。
+                test: /\.(png|jpg|gif)$/,
+                use: [{
+                    loader: 'url-loader',
+                    options: {
+                        limit: 8192//小于等于8K的图片会被转成base64编码，直接插入HTML中，减少HTTP请求。
                     }
                 }]
             }
@@ -60,8 +64,15 @@ module.exports = {
     },
 
     devtool: 'inline-source-map',//对控制台报错信息的优化
-    plugins: [new HtmlWebpaclPlugin({
-        filename:'index.html',
-        template:path.join(__dirname,'src/index.html')
-    })]
+
+    plugins: [
+        new HtmlWebpaclPlugin({
+        //这个插件，每次会自动把js插入到你的模板index.html里面去。
+        filename: 'index.html',
+        template: path.join(__dirname, 'src/index.html')
+    }),
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: 'vendor'
+        // })
+    ]
 }

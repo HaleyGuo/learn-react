@@ -11,8 +11,8 @@
   },
   "scripts": {
     "dev-build": "webpack --config webpack.dev.config.js",
+    "build": "webpack --config webpack.config.js",
     "start": "webpack-dev-server --config webpack.dev.config.js --hot",
-    "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
@@ -32,6 +32,7 @@
     "react-dom": "^16.4.1",
     "react-hot-loader": "^4.3.3",
     "style-loader": "^0.21.0",
+    "uglifyjs-webpack-plugin": "^1.2.7",
     "url-loader": "^1.0.1",
     "webpack": "^4.15.1",
     "webpack-cli": "^3.0.8",
