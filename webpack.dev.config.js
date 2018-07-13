@@ -40,5 +40,7 @@ module.exports = {
             actions:path.join(__dirname,'src/redux/actions'),
             reducers:path.join(__dirname,'src/redux/reducers'),
         }
-    }
+    },
+
+    devtool:'inline-source-map',//对控制台报错信息的优化
 }
