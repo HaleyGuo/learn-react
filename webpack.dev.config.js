@@ -11,7 +11,9 @@ module.exports = {
     // 输出到dist文件夹，输出文件名字为bundle.js
     output: {
         path: path.join(__dirname, './dist'),
-        filename: 'bundle.js'
+        filename: '[name].[hash].js',
+        chunkFilename: "[name].[chunkhash].js"//但是你可能发现，名字都是0.bundle.js这样子的，
+        // 这分不清楚是哪个页面的js呀！chunkFilename是除了entry定义的入口js之外的js
     },
     mode: 'development',
     module: {
