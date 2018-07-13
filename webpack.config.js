@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const UglifyJSPlugin=require('uglifyjs-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
     devtool: 'cheap-module-source-map',
@@ -14,7 +15,8 @@ module.exports = {
     output: {
         path: path.join(__dirname, './dist'),
         filename: '[name].[chunkhash].js',
-        chunkFilename: '[name].[chunkhash].js'
+        chunkFilename: '[name].[chunkhash].js',
+        publicPath: "/"//让静态文件的链接定位到静态服务器
     },
     module: {
         rules: [{
@@ -47,9 +49,7 @@ module.exports = {
             }
         }),
         new webpack.HashedModuleIdsPlugin(),
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: 'vendor'
-        // })
+        new CleanWebpackPlugin(['dist'])
 
     ],
     optimization: {
