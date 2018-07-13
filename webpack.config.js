@@ -40,11 +40,13 @@ module.exports = {
             template: path.join(__dirname, 'src/index.html')
         }),
         new UglifyJSPlugin(),
+        // library 将通过与 process.env.NODE_ENV 环境变量关联，以决定 library 中应该引用哪些内容
         new webpack.DefinePlugin({
             'process.env':{
                 'NODE_ENV':JSON.stringify('production')
             }
-        })
+        }),
+        new webpack.HashedModuleIdsPlugin(),
         // new webpack.optimize.CommonsChunkPlugin({
         //     name: 'vendor'
         // })
@@ -53,6 +55,9 @@ module.exports = {
     optimization: {
         splitChunks:{
             name: 'vendor'
+        },
+        runtimeChunk: {
+            name:'runtime'
         }
     },
 
