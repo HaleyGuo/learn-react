@@ -1,5 +1,6 @@
 const merge = require('webpack-merge');
 const path = require('path');
+const webpack = require('webpack');
 
 const commonConfig = require('./webpack.common.config.js');
 
@@ -7,6 +8,7 @@ const devConfig = {
     devtool: 'inline-source-map',
     entry: {
         app: [
+            'babel-polyfill',
             'react-hot-loader/patch',
             path.join(__dirname, 'src/index.js')
         ]
@@ -18,15 +20,24 @@ const devConfig = {
     module: {
         rules: [{
             test: /\.css$/,
-            use: ["style-loader", "css-loader"]
+            use: ['style-loader', 'css-loader', "postcss-loader"]
+            // use: ["style-loader", "css-loader?modules&localIdentName=[local]-[hash:base64:5]", "postcss-loader"]
         }]
     },
+    plugins:[
+        new webpack.DefinePlugin({
+            MOCK: true
+        })
+    ],
     devServer: {
         contentBase: path.join(__dirname, './dist'),
         historyApiFallback: true,
         port: 3001,
-        // hot: true,
+        hot: true,
         host:'127.0.0.1',
+        proxy: {
+            "/api/*": "http://localhost:3001/$1"
+        }
     }
 };
 
@@ -99,7 +110,7 @@ module.exports = merge({
 //     resolve: {
 //         alias: {
 //             pages: path.join(__dirname, 'src/pages'),
-//             component: path.join(__dirname, 'src/components'),
+//             components: path.join(__dirname, 'src/components'),
 //             router: path.join(__dirname, 'src/router'),
 //
 //             actions: path.join(__dirname, 'src/redux/actions'),

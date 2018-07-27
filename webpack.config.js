@@ -14,7 +14,8 @@ const publicConfig = {
             test: /\.css$/,
             use: ExtractTextPlugin.extract({
                 fallback: "style-loader",
-                use: "css-loader"
+                // use: "css-loader"
+                use: ["css-loader", "postcss-loader"]
             })
         }]
     },
@@ -113,7 +114,7 @@ module.exports = merge(commonConfig, publicConfig);
 //     resolve: {
 //         alias: {
 //             pages: path.join(__dirname, 'src/pages'),
-//             component: path.join(__dirname, 'src/components'),
+//             components: path.join(__dirname, 'src/components'),
 //             router: path.join(__dirname, 'src/router'),
 //             actions: path.join(__dirname, 'src/redux/actions'),
 //             reducers: path.join(__dirname, 'src/redux/reducers')

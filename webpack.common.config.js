@@ -5,6 +5,7 @@ const webpack = require('webpack');
 commonConfig = {
     entry: {
         app: [
+            "babel-polyfill",
             path.join(__dirname, 'src/index.js')
         ],
         vendor: ['react', 'react-router-dom', 'redux', 'react-dom', 'react-redux']
@@ -15,6 +16,7 @@ commonConfig = {
         chunkFilename: '[name].[chunkhash].js',
         publicPath: "/"
     },
+    mode: 'development',
     module: {
         rules: [{
             test: /\.js$/,
@@ -36,7 +38,14 @@ commonConfig = {
             template: path.join(__dirname, 'src/index.html')
         }),
         new webpack.HashedModuleIdsPlugin(),
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: 'vendor'
+        // }),
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: 'runtime'
+        // })
     ],
+
     optimization: {
         splitChunks: {
             name: 'vendor'
@@ -51,7 +60,8 @@ commonConfig = {
             components: path.join(__dirname, 'src/components'),
             router: path.join(__dirname, 'src/router'),
             actions: path.join(__dirname, 'src/redux/actions'),
-            reducers: path.join(__dirname, 'src/redux/reducers')
+            reducers: path.join(__dirname, 'src/redux/reducers'),
+            mock: path.join(__dirname, 'mock')
         }
     }
 };

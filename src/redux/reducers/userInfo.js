@@ -1,13 +1,14 @@
 import {GET_USER_INFO_REQUEST, GET_USER_INFO_SUCCESS, GET_USER_INFO_FAIL} from 'actions/userInfo';
 
+
 const initState = {
     isLoading: false,
     userInfo: {},
     errorMsg: ''
 };
 
-export default function reducer(state = initState, action){
-    switch (action.type){
+export default function reducer(state = initState, action) {
+    switch (action.type) {
         case GET_USER_INFO_REQUEST:
             return {
                 ...state,
@@ -19,8 +20,7 @@ export default function reducer(state = initState, action){
             return {
                 ...state,
                 isLoading: false,
-                userInfo:action.result.data,
-                // userInfo: action.userInfo,
+                userInfo: action.result.data,
                 errorMsg: ''
             };
         case GET_USER_INFO_FAIL:
