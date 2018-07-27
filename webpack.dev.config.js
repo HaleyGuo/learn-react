@@ -24,11 +24,11 @@ const devConfig = {
             // use: ["style-loader", "css-loader?modules&localIdentName=[local]-[hash:base64:5]", "postcss-loader"]
         }]
     },
-    plugins:[
-        new webpack.DefinePlugin({
-            MOCK: true
-        })
-    ],
+    // plugins:[
+    //     new webpack.DefinePlugin({
+    //         MOCK: true
+    //     })
+    // ],
     devServer: {
         contentBase: path.join(__dirname, './dist'),
         historyApiFallback: true,
@@ -36,7 +36,7 @@ const devConfig = {
         hot: true,
         host:'127.0.0.1',
         proxy: {
-            "/api/*": "http://localhost:3001/$1"
+            "/api/*": "http://localhost:8090/$1"
         }
     }
 };

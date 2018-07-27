@@ -5,9 +5,9 @@ import {Provider} from 'react-redux';
 import store from './redux/store';
 import {BrowserRouter as Router} from 'react-router-dom';
 import App from 'components/App/App';
-if (MOCK) {
-    require('mock/mock');
-}
+// if (MOCK) {
+//     require('mock/mock');
+// }
 import getRouter from 'router/router';
 
 /*初始化*/
