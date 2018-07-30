@@ -46,7 +46,7 @@ const getChildren = (node) => {
 const flatten = (arr) => {
     return [...(
         function* fn(arr) {
-            for(let i = 0, l = arr.length; i < l;i++) {
+            for (let i = 0, l = arr.length; i < l; i++) {
                 if (Array.isArray(arr[i])) {
                     yield* fn(arr[i]);
                 } else {
@@ -77,13 +77,13 @@ const fnn = (arr, n) => {
 }
 
 //
-const flatten = (arr, depth = 1)  => arr.reduce((a, b) => {
+const flatten = (arr, depth = 1) => arr.reduce((a, b) => {
     if (Array.isArray(b) && depth - 1) {
         return a.concat(flatten(b, depth - 1));
     }
     return a.concat(b);
 }, []);
-flatten([1,[2,3,[4,5,[10]],6],7],2)
+flatten([1, [2, 3, [4, 5, [10]], 6], 7], 2)
 //[1,[2,3,[4,5,[10]],6],7]=>[1,2,3,4,5,[10],6,7];
 
 //destructuringArray([1, [2, 3], 4], '[a, [b ], c]') => {a: 1, b: 2, c: 4}
@@ -110,25 +110,54 @@ const destructuringArray = (arr = [1, [2, 3], 4], str = '[a, [b, d], c]') => {
     let fn = (arr, act) => {
         return act.reduce((acc, item, index) => {
             return Array.isArray(item) ? Object.assign({}, acc, fn(arr[index], item)) :
-                Object.assign({ [item]: arr[index] }, acc)
+                Object.assign({[item]: arr[index]}, acc)
         }, {})
     }
     return fn(arr, act)
 }
 
 var arrString = 'abcdaabc';
-var arrAr=arrString.split('');
-var fn=arrAr=>arrAr.reduce((res,cur)=>{
-    res[cur] ? res[cur]++ : res[cur]  = 1;
+var arrAr = arrString.split('');
+var fn = arrAr => arrAr.reduce((res, cur) => {
+    res[cur] ? res[cur]++ : res[cur] = 1;
     return res;
-},{})
+}, {})
 fn(arrAr)
 
 
-
 var arrString = "abcdaabc12AB";
-var arr=arrString.replace(/[^a-zA-Z]*/g,'')
+var arr = arrString.replace(/[^a-zA-Z]*/g, '')
 arr
 "abcdaabcAB"
+
+repeat = (str) => {
+    let arr = [];
+    return (n) => {
+        for (let i = 0; i < n; i++) {
+            arr.push(str);
+        }
+        arr.join('');
+        return this;
+    }
+}
+
+let fn = {
+    setStr (str) {
+        this.str = str;
+        return this;
+    },
+    arr:[],
+    repeat (n) {
+        for (let i = 0; i < n; i++) {
+            this.arr.push(this.str);
+        }
+        let s=this.arr.join('');
+        console.log(s);
+        this.arr=[];
+        return this;
+    }
+}
+fn.setStr("rer");
+fn.repeat(1);
 
 
