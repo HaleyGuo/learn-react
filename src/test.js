@@ -161,3 +161,127 @@ fn.setStr("rer");
 fn.repeat(1);
 
 
+
+
+//事件循环机制
+// demo02
+console.log('golb1');
+
+setTimeout(function() {//macro
+    console.log('timeout1');
+    process.nextTick(function() {
+        console.log('timeout1_nextTick');
+    })
+    new Promise(function(resolve) {
+        console.log('timeout1_promise');
+        resolve();
+    }).then(function() {
+        console.log('timeout1_then')
+    })
+})
+
+setImmediate(function() {//macro
+    console.log('immediate1');
+    process.nextTick(function() {
+        console.log('immediate1_nextTick');
+    })
+    new Promise(function(resolve) {
+        console.log('immediate1_promise');
+        resolve();
+    }).then(function() {
+        console.log('immediate1_then')
+    })
+})
+
+process.nextTick(function() {//micro
+    console.log('glob1_nextTick');
+})
+
+new Promise(function(resolve) {//micro
+    console.log('glob1_promise');
+    resolve();
+}).then(function() {
+    console.log('glob1_then')
+})
+
+setTimeout(function() {//macro
+    console.log('timeout2');
+    process.nextTick(function() {
+        console.log('timeout2_nextTick');
+    })
+    new Promise(function(resolve) {
+        console.log('timeout2_promise');
+        resolve();
+    }).then(function() {
+        console.log('timeout2_then')
+    })
+})
+
+process.nextTick(function() {//micro
+    console.log('glob2_nextTick');
+})
+
+new Promise(function(resolve) {//micro
+    console.log('glob2_promise');
+    resolve();
+}).then(function() {
+    console.log('glob2_then')
+})
+
+setImmediate(function() {//macro
+    console.log('immediate2');
+    process.nextTick(function() {
+        console.log('immediate2_nextTick');
+    })
+    new Promise(function(resolve) {
+        console.log('immediate2_promise');
+        resolve();
+    }).then(function() {
+        console.log('immediate2_then')
+    })
+})
+
+//bind的手动实现
+//1.用法
+const id = 'window';
+function test () {
+    console.log(this.id)
+}
+
+const fn = test.bind(window);
+const obj = {
+    id: 'obj',
+    hehe:fn
+};
+
+fn();// window
+obj.hehe(); // window
+
+//拆分思路
+//1.返回一个新函数
+/*return function(){
+
+}*/
+//2.目标是当这个新函数被调用时，它的 this 值是传递给 bind() 的第一个参数, 它的参数是 bind() 的其他参数以及新函数传来的参数。
+Function.prototype.bind=function (that) {
+    var arr=Array.prototype.slice.apply(arguments,[1])//从第二个参数开始取 相当于arguments.slice(1);
+    var _this = this;//经测试这里的this 就很明确了，指向调用bind的对象，即这里的test对象
+    console.log(this);
+    return function () {
+        _this.apply(that,arr.concat(Array.prototype.slice.call(arguments)));
+    }
+}
+
+//测试
+var test = function(a,b){
+    console.log('作用域绑定 '+ this.value)
+    console.log('bind参数传递 '+ a.value2)
+    console.log('调用参数传递 ' + b)
+}
+var obj = {
+    value:'ok'
+}
+var fun_new = test.bind(obj,{value2:'also ok'});
+fun_new ('hello bind');
+
+
