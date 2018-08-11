@@ -24,7 +24,9 @@ function Promise(excutor) {
 
         // 为什么resolve 加setTimeout?
         // 2.2.4规范 onFulfilled 和 onRejected 只允许在 execution context 栈仅包含平台代码时运行.
-        // 注1 这里的平台代码指的是引擎、环境以及 promise 的实施代码。实践中要确保 onFulfilled 和 onRejected 方法异步执行，且应该在 then 方法被调用的那一轮事件循环之后的新执行栈中执行。
+        // 注1 这里的平台代码指的是引擎、环境以及 promise 的实施代码。
+        // 实践中要确保 onFulfilled 和 onRejected 方法异步执行，
+        // 且应该在 then 方法被调用的那一轮事件循环之后的新执行栈中执行。
 
         setTimeout(() => {
             // 调用resolve 回调对应onFulfilled函数
@@ -147,7 +149,8 @@ Promise.prototype.then = function(onFulfilled, onRejected) {
     // p1.then((value) => { // 此时p1.status 由pedding状态 => fulfilled状态
     //     console.log(value); // resolve
     //     // console.log(p1.status); // fulfilled
-    //     p1.then(value => { // 再次p1.then 这时已经为fulfilled状态 走的是fulfilled状态判断里的逻辑 所以我们也要确保判断里面onFuilled异步执行
+    //     p1.then(value => { // 再次p1.then 这时已经为fulfilled状态 走的是fulfilled状态判断里的逻辑
+    // 所以我们也要确保判断里面onFuilled异步执行
     //         console.log(value); // 'resolve'
     //     });
     //     console.log('当前执行栈中同步代码');
@@ -292,3 +295,57 @@ try {
     module.exports = Promise
 } catch (e) {
 }
+/**阿里笔试题目
+ * /
+ * @param ms
+ * @returns {Promise}
+ */
+//实现mergePromise函数，把传进去的数组顺序先后执行，
+//并且把返回的数据先后放到数组data中
+
+const timeout = ms => new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve();
+    }, ms);
+});
+
+const ajax1 = () => timeout(2000).then(() => {
+    console.log('1');
+    return 1;
+});
+
+const ajax2 = () => timeout(1000).then(() => {
+    console.log('2');
+    return 2;
+});
+
+const ajax3 = () => timeout(2000).then(() => {
+    console.log('3');
+    return 3;
+});
+
+const mergePromise = ajaxArray => {
+    // 在这里实现你的代码
+    var data = [];
+    var sequence = Promise.resolve();
+    ajaxArray.forEach(function(item){
+        sequence = sequence.then(item).then(function(res){
+            data.push(res);
+            return data;
+        });
+    })
+
+    return sequence;
+};
+
+mergePromise([ajax1, ajax2, ajax3]).then(data => {
+    console.log('done');
+    console.log(data); // data 为 [1, 2, 3]
+});
+
+// 分别输出
+// 1
+// 2
+// 3
+// done
+// [1, 2, 3]
