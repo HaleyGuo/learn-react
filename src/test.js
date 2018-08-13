@@ -286,23 +286,6 @@
 //
 //
 
-function Permutation(str)
-{
-    // write code here
-    if(str.length<=0)return '';
-    var arr = str.split("");
-    arr = derepeate(arr);//去重
-    var result = [];
-    function permu(arr,start,end){
-        if(start===end){
-            result.push(arr.join(""));
-        }else{
-            for(var i=start;i<=end;i++){
-                swap(arr,start,i);
-                permu(arr,start+1,end);
-                swap(arr,start,i)
-            }
-        }
 // //获取所有的DOM节点
 // function getDom(html) {
 //     var nodes = [];
@@ -591,36 +574,36 @@ function Permutation(str)
 //
 //
 
-var a = 1
-var b = 2
-var c = 3
-function getMax(){
-    var sum = [a,a+b,a+b+c];
-    var f=[];
-    var t;
-    var k=1;
+// var a = 1
+// var b = 2
+// var c = 3
+// function getMax(){
+//     var sum = [a,a+b,a+b+c];
+//     var f=[];
+//     var t;
+//     var k=1;
+//
+//     // for(var i=1;i<3;i++){
+//     //     sum[i]=sum[i-1]+
+//     // }
+//     for(var i=0;i<3;i++)
+//     {
+//         f[i][0]=sum[i];
+//     }
+//     for(var i=1;i<=2;i++)
+//     {
+//         t=Math.min(i-1,k);
+//         for(var j=0;j<t;j++){
+//             for(var l=1;l<=i;l++){
+//                 f[i][j]=Math.max(f[i][j],f[l-1][j-1]*(sum[i]-sum[l-1]));
+//             }
+//         }
+//
+//     }
+//     console.log(f[3][1]);
+// }
 
-    // for(var i=1;i<3;i++){
-    //     sum[i]=sum[i-1]+
-    // }
-    for(var i=0;i<3;i++)
-    {
-        f[i][0]=sum[i];
-    }
-    for(var i=1;i<=2;i++)
-    {
-        t=Math.min(i-1,k);
-        for(var j=0;j<t;j++){
-            for(var l=1;l<=i;l++){
-                f[i][j]=Math.max(f[i][j],f[l-1][j-1]*(sum[i]-sum[l-1]));
-            }
-        }
-
-    }
-    console.log(f[3][1]);
-}
-
-getMax();
+// getMax();
 // var arr=[];
 // arr[0]=a;
 // arr[1]=b;
@@ -644,28 +627,38 @@ getMax();
 // var result = arr[2] * (arr[1] + arr[0]);
 // console.log(result);
 
+//字符串全排列
+function Permutation(str) {
+    // write code here
+    if (str.length <= 0) return '';
+    var arr = str.split("");
+    arr = derepeate(arr);//去重
+    var result = [];
 
+    function permu(arr, start, end) {
+        if (start === end) {
+            result.push(arr.join(""));
+        } else {
+            for (var i = start; i <= end; i++) {
+                swap(arr, start, i);
+                permu(arr, start + 1, end);
+                swap(arr, start, i)
+            }
+        }
+
+        function swap(arr, a, b) {
+            var temp = arr[a];
+            arr[a] = arr[b];
+            arr[b] = temp;
+        }
     }
-    function swap(arr,a,b){
-        var temp = arr[a];
-        arr[a] = arr[b];
-        arr[b] = temp;
-    }
-
-
-
-
-
-    function derepeate(arr){
+    function derepeate(arr) {
         return Array.from(new Set(arr));
     }
-    permu(arr,0,arr.length-1);
+    permu(arr, 0, arr.length - 1);
     result.sort();
     console.log(result);
 }
-
-
-
 var str="abca";
 Permutation(str);
 
