@@ -628,40 +628,77 @@
 // console.log(result);
 
 //字符串全排列
-function Permutation(str) {
-    // write code here
-    if (str.length <= 0) return '';
-    var arr = str.split("");
-    arr = derepeate(arr);//去重
-    var result = [];
+// function Permutation(str) {
+//     // write code here
+//     if (str.length <= 0) return '';
+//     var arr = str.split("");
+//     arr = derepeate(arr);//去重
+//     var result = [];
+//
+//     function permu(arr, start, end) {
+//         if (start === end) {
+//             result.push(arr.join(""));
+//         } else {
+//             for (var i = start; i <= end; i++) {
+//                 swap(arr, start, i);
+//                 permu(arr, start + 1, end);
+//                 swap(arr, start, i)
+//             }
+//         }
+//
+//         function swap(arr, a, b) {
+//             var temp = arr[a];
+//             arr[a] = arr[b];
+//             arr[b] = temp;
+//         }
+//     }
+//     function derepeate(arr) {
+//         return Array.from(new Set(arr));
+//     }
+//     permu(arr, 0, arr.length - 1);
+//     result.sort();
+//     console.log(result);
+// }
+// var str="abca";
+// Permutation(str);
 
-    function permu(arr, start, end) {
-        if (start === end) {
-            result.push(arr.join(""));
-        } else {
-            for (var i = start; i <= end; i++) {
-                swap(arr, start, i);
-                permu(arr, start + 1, end);
-                swap(arr, start, i)
+/**
+ * underscore 防抖函数，返回函数连续调用时，空闲时间必须大于或等于 wait，func 才会执行
+ *
+ * @param  {function} func        回调函数
+ * @param  {number}   wait        表示时间窗口的间隔
+ * @param  {boolean}  immediate   设置为ture时，是否立即调用函数
+ * @return {function}             返回客户调用函数
+ */
+function debounce(fn,wait,immediate){
+    var timer,timestamp,args,context,result;
+    var later=function(){
+        var last=new Date()-timestamp;
+        if(last<wait && last>=0){
+            timer=setTimeout(later,wait-last);
+        }else{
+            timer=null;
+            if(!immediate){
+                result=fn.apply(context,args);
+                if(!timer)context=args=null;
             }
-        }
 
-        function swap(arr, a, b) {
-            var temp = arr[a];
-            arr[a] = arr[b];
-            arr[b] = temp;
         }
     }
-    function derepeate(arr) {
-        return Array.from(new Set(arr));
+    return function () {
+        context=this;
+        args=arguments;
+        timestamp=new Date();
+        var callNow=!timer && immediate;
+        if(!timer){
+            timer=setTimeout(later,wait);
+        }
+        if(callNow){
+            result=fn.apply(context,args);
+            context=args=null;
+        }
     }
-    permu(arr, 0, arr.length - 1);
-    result.sort();
-    console.log(result);
 }
-var str="abca";
-Permutation(str);
-
 
 
 
